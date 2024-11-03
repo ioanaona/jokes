@@ -41,7 +41,10 @@ export default function Chat() {
     console.log(`state: ${state.length} / ${state.tone} / ${state.temperature}`);
   }
 
-  const { messages, append, isLoading } = useChat();
+  const { messages: jokeMessages, append: appendJoke, isLoading: isJokeLoading } = useChat();
+  const { messages: evaluationMessages, append: appendEvaluation, isLoading: isEvaluationLoading } = useChat({
+    api: '/api/evaluation'
+  });
 
   return (
     <main className="mx-auto w-full p-24 flex flex-col">
@@ -132,9 +135,9 @@ export default function Chat() {
 
           <button
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
-            disabled={isLoading || !state.length || !state.tone}
+            disabled={isJokeLoading || !state.length || !state.tone}
             onClick={() =>
-              append({
+              appendJoke({
                 role: "user",
                 content: `Generate a ${state.length} joke in a ${state.tone} tone`,
               }, {
@@ -149,12 +152,39 @@ export default function Chat() {
 
           <div
             hidden={
-              messages.length === 0 ||
-              messages[messages.length - 1]?.content.startsWith("Generate")
+              jokeMessages.length === 0 ||
+              jokeMessages[jokeMessages.length - 1]?.content.startsWith("Your only job is to tell jokes")
             }
             className="bg-opacity-25 bg-gray-700 rounded-lg p-4"
           >
-            {messages[messages.length - 1]?.content}
+            {jokeMessages[jokeMessages.length - 1]?.content}
+          </div>
+
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded disabled:opacity-50"
+            disabled={jokeMessages.length < 2 || isJokeLoading}
+            onClick={() =>
+              appendEvaluation({
+                role: "user",
+                content: `Evaluate the following joke "${jokeMessages[jokeMessages.length - 1].content}"`,
+              }, {
+                headers: {
+                  "Temperature": `${state.temperature}`
+                }
+              })
+            }
+          >
+            Evaluate Joke
+          </button>
+
+          <div
+            hidden={
+              evaluationMessages.length === 0 ||
+              evaluationMessages[evaluationMessages.length - 1]?.content.startsWith("Your only job is to evaluate")
+            }
+            className="bg-opacity-25 bg-gray-700 rounded-lg p-4"
+          >
+            {evaluationMessages[evaluationMessages.length - 1]?.content}
           </div>
         </div>
       </div>
