@@ -6,14 +6,15 @@ const openai = new OpenAI();
 export const runtime = "edge";
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  const { messages, temperature } = await req.json(); // Include temperature
 
   const lastMessage = messages[messages.length - 1];
 
-  // Check if the last message is a joke generation request
+  let response;
+
   if (lastMessage.content.startsWith("Generate a")) {
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", // You might need to adjust the model
+    response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
       stream: true,
       messages: [
         {
@@ -22,14 +23,11 @@ export async function POST(req: Request) {
         },
         ...messages,
       ],
+      temperature: temperature, // Use the provided temperature
     });
-
-    const stream = OpenAIStream(response);
-    return new StreamingTextResponse(stream);
   } else if (lastMessage.content.startsWith("Evaluate the following joke")) {
-    // If the last message is an evaluation request, send a separate request
-    const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", // You might need to adjust the model
+    response = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo",
       stream: true,
       messages: [
         {
@@ -38,12 +36,12 @@ export async function POST(req: Request) {
         },
         ...messages,
       ],
+      temperature: 0, // Set temperature to 0 for evaluation
     });
-
-    const stream = OpenAIStream(response);
-    return new StreamingTextResponse(stream);
   } else {
-    // Handle other types of messages or requests if needed
     return new Response("Invalid request", { status: 400 });
   }
+
+  const stream = OpenAIStream(response);
+  return new StreamingTextResponse(stream);
 }
