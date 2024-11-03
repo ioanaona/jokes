@@ -41,11 +41,7 @@ export default function Chat() {
     console.log(`state: ${state.length} / ${state.tone} / ${state.temperature}`);
   }
 
-  const { messages, append, isLoading } = useChat({
-    body: {
-      temperature: state.temperature
-    }
-  });
+  const { messages, append, isLoading } = useChat();
 
   return (
     <main className="mx-auto w-full p-24 flex flex-col">
@@ -140,7 +136,11 @@ export default function Chat() {
             onClick={() =>
               append({
                 role: "user",
-                content: `Generate a ${state.length} joke in a ${state.tone} tone`
+                content: `Generate a ${state.length} joke in a ${state.tone} tone`,
+              }, {
+                headers: {
+                  "Temperature": `${state.temperature}`
+                }
               })
             }
           >
