@@ -9,10 +9,10 @@ export default function Chat() {
     { emoji: "👖", value: "long" },
   ];
   const tones = [
-    { emoji: "😊", value: "Happy" },
-    { emoji: "😢", value: "Sad" },
-    { emoji: "😏", value: "Sarcastic" },
-    { emoji: "😂", value: "Morbid" },
+    { emoji: "😊", value: "happy" },
+    { emoji: "😢", value: "sad" },
+    { emoji: "😏", value: "sarcastic" },
+    { emoji: "💀", value: "morbid" },
   ];
 
   const [temp, setTemp] = useState(1);
@@ -50,21 +50,23 @@ export default function Chat() {
     <main className="mx-auto w-full p-24 flex flex-col">
       <div className="p4 m-4">
         <div className="flex flex-col items-center justify-center space-y-8 text-white">
-          <div className="space-y-2">
-            <h2 className="text-3xl font-bold">Story Telling App</h2>
-            <p className="text-zinc-500 dark:text-zinc-400">
+          <div className="space-y-2 d-flex justify-content-center border-2 border-dashed border-zinc-500 p-4 rounded-lg">
+            <h2 className="text-3xl font-extrabold text-zinc-500 dark:text-zinc-400 text-center tracking-tight">Story Telling App</h2>
+            <p className="text-zinc-500 dark:text-zinc-400 font-semibold tracking-wide">
               Customize the story by selecting the joke length, tone and temperature.
             </p>
           </div>
 
-          <div className="space-y-4 bg-opacity-25 bg-gray-700 rounded-lg p-4">
-            <h3 className="text-xl font-semibold">Genre</h3>
+          <div className="w-[300px] p-6 bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 rounded-xl shadow-lg">
+            <div className="text-white text-xl font-bold flex justify-center mb-4">
+              📝 Genre 📝
+            </div>
 
             <div className="flex flex-wrap justify-center">
               {genres.map(({ value, emoji }) => (
                 <div
                   key={value}
-                  className="p-4 m-2 bg-opacity-25 bg-gray-600 rounded-lg"
+                  className="p-2 m-1 bg-black/30 rounded-lg hover:opacity-80 transition-all duration-200 cursor-pointer"
                 >
                   <input
                     id={value}
@@ -72,8 +74,9 @@ export default function Chat() {
                     value={value}
                     name="length"
                     onChange={handleChange}
+                    className="hidden"
                   />
-                  <label className="ml-2" htmlFor={value}>
+                  <label className="cursor-pointer px-2 py-1" htmlFor={value}>
                     {`${emoji} ${value}`}
                   </label>
                 </div>
@@ -81,14 +84,16 @@ export default function Chat() {
             </div>
           </div>
 
-          <div className="space-y-4 bg-opacity-25 bg-gray-700 rounded-lg p-4">
-            <h3 className="text-xl font-semibold">Tones</h3>
+          <div className="w-[300px] p-6 bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 rounded-xl shadow-lg">
+            <div className="text-white text-xl font-bold flex justify-center mb-4">
+              🎭 Tone 🎭
+            </div>
 
             <div className="flex flex-wrap justify-center">
               {tones.map(({ value, emoji }) => (
                 <div
                   key={value}
-                  className="p-4 m-2 bg-opacity-25 bg-gray-600 rounded-lg"
+                  className="p-2 m-1 bg-black/30 rounded-lg hover:opacity-80 transition-all duration-200 cursor-pointer"
                 >
                   <input
                     id={value}
@@ -96,8 +101,9 @@ export default function Chat() {
                     name="tone"
                     value={value}
                     onChange={handleChange}
+                    className="hidden"
                   />
-                  <label className="ml-2" htmlFor={value}>
+                  <label className="cursor-pointer px-2 py-1" htmlFor={value}>
                     {`${emoji} ${value}`}
                   </label>
                 </div>
@@ -105,14 +111,14 @@ export default function Chat() {
             </div>
           </div>
 
-          <div style={{ width: '300px', padding: '20px' }}>
-            <div style={{ color: "black", display: 'flex', justifyContent: 'center', marginBottom: '10px' }}>
-              Temperature: 
+          <div className="w-[300px] p-6 bg-gradient-to-r from-purple-600 via-pink-500 to-red-500 rounded-xl shadow-lg">
+            <div className="text-white text-xl font-bold flex justify-center mb-4">
+              🌡️ Temperature 🌡️
             </div>
-            <div style={{ color: "black", display: 'flex', justifyContent: 'space-between', marginBottom: '10px' }}>
-              <span>0</span>
-              <span>Current: {temp}</span>
-              <span>2</span>
+            <div className="text-white flex justify-between mb-4 font-mono">
+              <span className="bg-black/30 px-2 py-1 rounded">0</span>
+              <span className="bg-black/30 px-3 py-1 rounded">Current: {temp}</span>
+              <span className="bg-black/30 px-2 py-1 rounded">2</span>
             </div>
             <input
               type="range"
@@ -121,15 +127,17 @@ export default function Chat() {
               step={0.1}
               value={temp}
               onChange={handleTempChange}
-              style={{
-                width: '100%',
-                height: '4px',
-                appearance: 'none',
-                backgroundColor: '#ddd',
-                outline: 'none',
-                borderRadius: '2px',
-                cursor: 'pointer'
-              }}
+              className="w-full h-2 appearance-none bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-lg cursor-pointer 
+              hover:opacity-80 transition-all duration-200
+              [&::-webkit-slider-thumb]:appearance-none
+              [&::-webkit-slider-thumb]:w-6
+              [&::-webkit-slider-thumb]:h-6
+              [&::-webkit-slider-thumb]:rounded-full
+              [&::-webkit-slider-thumb]:bg-white
+              [&::-webkit-slider-thumb]:shadow-lg
+              [&::-webkit-slider-thumb]:cursor-pointer
+              [&::-webkit-slider-thumb]:hover:scale-110
+              [&::-webkit-slider-thumb]:transition-all"
             />
           </div>
 
@@ -147,7 +155,7 @@ export default function Chat() {
               })
             }
           >
-            Generate Story
+            Generate a {state.length} {state.tone} joke (temperature: {temp})
           </button>
 
           <div
@@ -155,7 +163,7 @@ export default function Chat() {
               jokeMessages.length === 0 ||
               jokeMessages[jokeMessages.length - 1]?.content.startsWith("Generate")
             }
-            className="bg-opacity-25 bg-gray-700 rounded-lg p-4"
+            className="bg-opacity-25 bg-gradient-to-r from-green-700 via-emerald-700 to-teal-700 rounded-lg p-4"
           >
             {jokeMessages[jokeMessages.length - 1]?.content}
           </div>
@@ -182,7 +190,7 @@ export default function Chat() {
               evaluationMessages.length === 0 ||
               evaluationMessages[evaluationMessages.length - 1]?.content.startsWith("Evaluate")
             }
-            className="bg-opacity-25 bg-gray-700 rounded-lg p-4"
+            className="bg-opacity-25 bg-gradient-to-r from-purple-700 via-pink-700 to-red-700 rounded-lg p-4"
           >
             {evaluationMessages[evaluationMessages.length - 1]?.content}
           </div>
