@@ -153,7 +153,7 @@ export default function Chat() {
           <div
             hidden={
               jokeMessages.length === 0 ||
-              jokeMessages[jokeMessages.length - 1]?.content.startsWith("Your only job is to tell jokes")
+              jokeMessages[jokeMessages.length - 1]?.content.startsWith("Generate")
             }
             className="bg-opacity-25 bg-gray-700 rounded-lg p-4"
           >
@@ -180,7 +180,7 @@ export default function Chat() {
           <div
             hidden={
               evaluationMessages.length === 0 ||
-              evaluationMessages[evaluationMessages.length - 1]?.content.startsWith("Your only job is to evaluate")
+              evaluationMessages[evaluationMessages.length - 1]?.content.startsWith("Evaluate")
             }
             className="bg-opacity-25 bg-gray-700 rounded-lg p-4"
           >
